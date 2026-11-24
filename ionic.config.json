@@ -1,0 +1,7 @@
+{
+  "name": "directorio-empleados",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
