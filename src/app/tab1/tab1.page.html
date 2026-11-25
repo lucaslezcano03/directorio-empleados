@@ -1,15 +1,75 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Directorio de Empleados</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <div class="encabezado">
+    <h1>Empleados</h1>
+    <p>Listado general del personal</p>
+  </div>
+
+  <ion-searchbar
+    placeholder="Buscar empleado..."
+    [debounce]="300"
+    (ionInput)="filtrarEmpleados($event)"
+  ></ion-searchbar>
+
+  @if (cargando) {
+    <div class="estado">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando empleados...</p>
+    </div>
+  } @else if (mensajeError) {
+    <div class="estado">
+      <ion-text color="danger">
+        <p>{{ mensajeError }}</p>
+      </ion-text>
+
+      <ion-button (click)="cargarEmpleados()">
+        Reintentar
+      </ion-button>
+    </div>
+  } @else if (empleadosFiltrados.length === 0) {
+    <div class="estado">
+      <ion-text color="medium">
+        <p>No se encontraron empleados.</p>
+      </ion-text>
+    </div>
+  } @else {
+    <ion-list class="lista-empleados">
+      @for (empleado of empleadosFiltrados; track empleado.id) {
+        <ion-item class="empleado-item" lines="none">
+
+          <ion-avatar slot="start">
+            <img
+              [src]="empleado.image"
+              [alt]="empleado.firstName + ' ' + empleado.lastName"
+            />
+          </ion-avatar>
+
+          <ion-label>
+            <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
+
+            <p>{{ empleado.company.title }}</p>
+
+            <p>{{ empleado.email }}</p>
+
+            <ion-badge color="primary">
+              {{ empleado.company.department }}
+            </ion-badge>
+          </ion-label>
+
+        </ion-item>
+      }
+    </ion-list>
+
+    <p class="contador">
+      Mostrando {{ empleadosFiltrados.length }} de {{ empleados.length }} empleados
+    </p>
+  }
+
 </ion-content>
