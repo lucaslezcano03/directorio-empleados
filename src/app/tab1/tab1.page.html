@@ -53,15 +53,25 @@
 
           <ion-label>
             <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
-
             <p>{{ empleado.company.title }}</p>
-
             <p>{{ empleado.email }}</p>
 
             <ion-badge color="primary">
               {{ empleado.company.department }}
             </ion-badge>
           </ion-label>
+
+          <ion-button
+            slot="end"
+            fill="clear"
+            [color]="favoritosService.esFavorito(empleado.id) ? 'danger' : 'medium'"
+            [attr.aria-label]="favoritosService.esFavorito(empleado.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+            (click)="alternarFavorito(empleado.id)"
+          >
+            <ion-icon
+              [name]="favoritosService.esFavorito(empleado.id) ? 'heart' : 'heart-outline'"
+            ></ion-icon>
+          </ion-button>
 
         </ion-item>
       }

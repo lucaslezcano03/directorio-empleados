@@ -1,15 +1,90 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 2 </ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Departamentos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <div class="encabezado">
+    <h1>Departamentos</h1>
+    <p>Personal organizado por área de trabajo</p>
+  </div>
+
+  @if (cargando) {
+    <div class="estado">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando departamentos...</p>
+    </div>
+  } @else if (mensajeError) {
+    <div class="estado">
+      <ion-text color="danger">
+        <p>{{ mensajeError }}</p>
+      </ion-text>
+
+      <ion-button (click)="cargarDepartamentos()">
+        Reintentar
+      </ion-button>
+    </div>
+  } @else if (departamentos.length === 0) {
+    <div class="estado">
+      <ion-text color="medium">
+        <p>No se encontraron departamentos.</p>
+      </ion-text>
+    </div>
+  } @else {
+
+    <div class="lista-departamentos">
+      @for (departamento of departamentos; track departamento.nombre) {
+        <div class="departamento-card">
+
+          <ion-item lines="none" class="departamento-item">
+            <ion-label>
+              <h2>{{ departamento.nombre }}</h2>
+              <p>{{ departamento.empleados.length }} empleados</p>
+            </ion-label>
+
+            <ion-button
+              slot="end"
+              fill="clear"
+              size="small"
+              (click)="alternarDepartamento(departamento)"
+            >
+              {{ departamento.expandido ? 'Ocultar' : 'Ver empleados' }}
+            </ion-button>
+          </ion-item>
+
+          @if (departamento.expandido) {
+            <ion-list class="lista-integrantes">
+              @for (empleado of departamento.empleados; track empleado.id) {
+                <ion-item lines="none">
+
+                  <ion-avatar slot="start">
+                    <img
+                      [src]="empleado.image"
+                      [alt]="empleado.firstName + ' ' + empleado.lastName"
+                    />
+                  </ion-avatar>
+
+                  <ion-label>
+                    <h3>{{ empleado.firstName }} {{ empleado.lastName }}</h3>
+                    <p>{{ empleado.company.title }}</p>
+                    <p>{{ empleado.email }}</p>
+                  </ion-label>
+
+                </ion-item>
+              }
+            </ion-list>
+          }
+
+        </div>
+      }
+    </div>
+
+    <p class="contador">
+      {{ departamentos.length }} departamentos registrados
+      · {{ totalEmpleados }} empleados
+    </p>
+  }
+
 </ion-content>
