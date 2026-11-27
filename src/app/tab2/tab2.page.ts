@@ -2,7 +2,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  inject,
+  Inject,
   type OnInit,
 } from '@angular/core';
 import {
@@ -17,6 +17,8 @@ import {
   IonButton,
   IonSpinner,
   IonText,
+  IonBadge,
+  IonSearchbar,
 } from '@ionic/angular';
 
 import type { Empleado } from '../models/empleado.model';
@@ -44,16 +46,24 @@ interface Departamento {
     IonButton,
     IonSpinner,
     IonText,
+    IonBadge,
+    IonSearchbar,
   ],
 })
 export class Tab2Page implements OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly empleadosService = inject(EmpleadosService);
-
   departamentos: Departamento[] = [];
   cargando = true;
   mensajeError = '';
   totalEmpleados = 0;
+  textoBusqueda = '';
+
+  /* eslint-disable @angular-eslint/prefer-inject */
+  constructor(
+    @Inject(ChangeDetectorRef) private readonly cdr: ChangeDetectorRef,
+    @Inject(EmpleadosService)
+    private readonly empleadosService: EmpleadosService,
+  ) {}
+  /* eslint-enable @angular-eslint/prefer-inject */
 
   ngOnInit(): void {
     this.cargarDepartamentos();
@@ -101,6 +111,26 @@ export class Tab2Page implements OnInit {
         this.cdr.markForCheck();
       },
     });
+  }
+
+  // Filtra los departamentos por su nombre.
+  get departamentosFiltrados(): Departamento[] {
+    const termino = this.textoBusqueda.trim().toLowerCase();
+
+    if (!termino) {
+      return this.departamentos;
+    }
+
+    return this.departamentos.filter((departamento) =>
+      departamento.nombre.toLowerCase().includes(termino),
+    );
+  }
+
+  // Actualiza el texto ingresado en el buscador.
+  filtrarDepartamentos(
+    event: CustomEvent<{ value?: string | null }>,
+  ): void {
+    this.textoBusqueda = event.detail.value ?? '';
   }
 
   // Muestra u oculta los empleados de un departamento.
