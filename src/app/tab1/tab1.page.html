@@ -12,11 +12,67 @@
     <p>Listado general del personal</p>
   </div>
 
+  @if (!cargando && !mensajeError) {
+    <div class="resumen-estadisticas">
+
+      <div class="tarjeta-estadistica">
+        <span class="valor-estadistica">
+          {{ empleados.length }}
+        </span>
+        <span class="etiqueta-estadistica">
+          Empleados
+        </span>
+      </div>
+
+      <div class="tarjeta-estadistica">
+        <span class="valor-estadistica">
+          {{ cantidadDepartamentos }}
+        </span>
+        <span class="etiqueta-estadistica">
+          Departamentos
+        </span>
+      </div>
+
+      <div class="tarjeta-estadistica">
+        <span class="valor-estadistica">
+          {{ cantidadFavoritos }}
+        </span>
+        <span class="etiqueta-estadistica">
+          Favoritos
+        </span>
+      </div>
+
+    </div>
+  }
+
   <ion-searchbar
     placeholder="Buscar empleado..."
     [debounce]="300"
     (ionInput)="filtrarEmpleados($event)"
   ></ion-searchbar>
+
+  @if (!cargando && !mensajeError) {
+    <div class="barra-ordenamiento">
+
+      <span>Ordenar por nombre</span>
+
+      <ion-segment
+        [value]="orden"
+        (ionChange)="cambiarOrden($event.detail.value)"
+        aria-label="Ordenar empleados por nombre"
+      >
+        <ion-segment-button value="asc">
+          <ion-label>A - Z</ion-label>
+        </ion-segment-button>
+
+        <ion-segment-button value="desc">
+          <ion-label>Z - A</ion-label>
+        </ion-segment-button>
+
+      </ion-segment>
+
+    </div>
+  }
 
   @if (cargando) {
     <div class="estado">
@@ -41,6 +97,7 @@
     </div>
   } @else {
     <ion-list class="lista-empleados">
+
       @for (empleado of empleadosFiltrados; track empleado.id) {
         <ion-item class="empleado-item" lines="none">
 
@@ -52,7 +109,10 @@
           </ion-avatar>
 
           <ion-label>
-            <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
+            <h2>
+              {{ empleado.firstName }} {{ empleado.lastName }}
+            </h2>
+
             <p>{{ empleado.company.title }}</p>
             <p>{{ empleado.email }}</p>
 
@@ -75,10 +135,12 @@
 
         </ion-item>
       }
+
     </ion-list>
 
     <p class="contador">
-      Mostrando {{ empleadosFiltrados.length }} de {{ empleados.length }} empleados
+      Mostrando {{ empleadosFiltrados.length }}
+      de {{ empleados.length }} empleados
     </p>
   }
 

@@ -1,52 +1,124 @@
 
 ion-content {
-  --background: #f5f6fa;
+  --background: #f4f6fb;
 }
 
 .encabezado {
-  margin: 12px 4px 18px;
+  margin: 12px 4px 20px;
 
   h1 {
     font-size: 26px;
     font-weight: 700;
     margin-bottom: 5px;
-    color: var(--ion-color-dark);
+    color: #1e293b;
   }
 
   p {
-    color: var(--ion-color-medium);
+    color: #64748b;
     margin-top: 0;
     font-size: 14px;
   }
 }
 
+.resumen-estadisticas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.tarjeta-estadistica {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 8px;
+  min-height: 76px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.valor-estadistica {
+  font-size: 22px;
+  font-weight: 700;
+  color: #075bea;
+}
+
+.etiqueta-estadistica {
+  font-size: 11px;
+  color: #64748b;
+  text-align: center;
+}
+
 ion-searchbar {
   --background: #ffffff;
-  --border-radius: 12px;
-  --box-shadow: none;
+  --border-radius: 14px;
+  --box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  --color: #1e293b;
+  --placeholder-color: #94a3b8;
+  --icon-color: #64748b;
+
   padding: 0;
   margin-bottom: 16px;
+}
+
+.barra-ordenamiento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 2px 16px;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  ion-segment {
+    width: 145px;
+    flex-shrink: 0;
+    --background: #e8eef9;
+    border-radius: 10px;
+  }
+
+  ion-segment-button {
+    min-height: 36px;
+    font-size: 12px;
+    font-weight: 600;
+
+    --indicator-color: #075bea;
+    --color: #64748b;
+    --color-checked: #ffffff;
+  }
 }
 
 .lista-empleados {
   background: transparent;
   margin: 0;
+  padding: 0;
 }
 
 .empleado-item {
   --background: #ffffff;
-  --border-radius: 12px;
-  --padding-start: 12px;
-  --inner-padding-end: 12px;
-  --min-height: 88px;
+  --border-radius: 14px;
+  --padding-start: 14px;
+  --inner-padding-end: 10px;
+  --min-height: 100px;
+  --border-width: 0;
 
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 ion-avatar {
-  width: 54px;
-  height: 54px;
-  margin-right: 5px;
+  width: 56px;
+  height: 56px;
+  margin-right: 12px;
 
   img {
     width: 100%;
@@ -58,24 +130,28 @@ ion-avatar {
 ion-label {
   h2 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
+    color: #1e293b;
     margin-bottom: 5px;
   }
 
   p {
     font-size: 12px;
-    color: var(--ion-color-medium);
+    color: #64748b;
     margin-top: 4px;
   }
 
   ion-badge {
-    margin-top: 5px;
-    font-weight: 500;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 8px;
+    border-radius: 6px;
   }
 }
 
 .estado {
-  min-height: 180px;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,7 +167,7 @@ ion-label {
 
 .contador {
   text-align: center;
-  color: var(--ion-color-medium);
+  color: #64748b;
   font-size: 12px;
-  margin: 18px 0;
+  margin: 20px 0;
 }

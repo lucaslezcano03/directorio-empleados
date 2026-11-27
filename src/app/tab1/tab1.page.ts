@@ -2,7 +2,7 @@
 import {
   ChangeDetectorRef,
   Component,
-  inject,
+  Inject,
   type OnInit,
 } from '@angular/core';
 import {
@@ -20,6 +20,8 @@ import {
   IonText,
   IonButton,
   IonIcon,
+  IonSegment,
+  IonSegmentButton,
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
@@ -47,22 +49,42 @@ import { FavoritosService } from '../services/favoritos.service';
     IonText,
     IonButton,
     IonIcon,
+    IonSegment,
+    IonSegmentButton,
   ],
 })
 export class Tab1Page implements OnInit {
-  private readonly cdr = inject(ChangeDetectorRef);
-  private readonly empleadosService = inject(EmpleadosService);
-  readonly favoritosService = inject(FavoritosService);
-
   empleados: Empleado[] = [];
   empleadosFiltrados: Empleado[] = [];
 
   cargando = true;
   mensajeError = '';
 
-  constructor() {
+  private textoBusqueda = '';
+
+  orden: 'asc' | 'desc' = 'asc';
+
+  get cantidadDepartamentos(): number {
+    return new Set(
+      this.empleados.map(
+        (empleado) => empleado.company.department,
+      ),
+    ).size;
+  }
+
+  get cantidadFavoritos(): number {
+    return this.favoritosService.idsFavoritos.length;
+  }
+
+  /* eslint-disable @angular-eslint/prefer-inject */
+  constructor(
+    @Inject(ChangeDetectorRef) private readonly cdr: ChangeDetectorRef,
+    @Inject(EmpleadosService) private readonly empleadosService: EmpleadosService,
+    @Inject(FavoritosService) readonly favoritosService: FavoritosService,
+  ) {
     addIcons({ heart, heartOutline });
   }
+  /* eslint-enable @angular-eslint/prefer-inject */
 
   ngOnInit(): void {
     void this.inicializar();
@@ -86,42 +108,75 @@ export class Tab1Page implements OnInit {
     this.empleadosService.obtenerEmpleados().subscribe({
       next: (respuesta) => {
         this.empleados = respuesta.users;
-        this.empleadosFiltrados = [...this.empleados];
-        this.cargando = false;
+        this.actualizarEmpleadosFiltrados();
 
+        this.cargando = false;
         this.cdr.markForCheck();
       },
       error: () => {
         this.mensajeError =
           'No se pudieron cargar los empleados. Verificá tu conexión.';
-        this.cargando = false;
 
+        this.cargando = false;
         this.cdr.markForCheck();
       },
     });
   }
 
   // Filtra por nombre, apellido, correo o departamento.
-  filtrarEmpleados(event: CustomEvent<{ value?: string | null }>): void {
-    const texto = event.detail.value?.trim().toLowerCase() ?? '';
+  filtrarEmpleados(
+    event: CustomEvent<{ value?: string | null }>,
+  ): void {
+    this.textoBusqueda =
+      event.detail.value?.trim().toLowerCase() ?? '';
 
-    this.empleadosFiltrados = this.empleados.filter((empleado) => {
-      const nombre =
-        `${empleado.firstName} ${empleado.lastName}`.toLowerCase();
-      const correo = empleado.email.toLowerCase();
-      const departamento = empleado.company.department.toLowerCase();
+    this.actualizarEmpleadosFiltrados();
+  }
 
-      return (
-        nombre.includes(texto) ||
-        correo.includes(texto) ||
-        departamento.includes(texto)
-      );
-    });
+  // Cambia el orden alfabético de los empleados.
+  cambiarOrden(valor: unknown): void {
+    this.orden = valor === 'desc' ? 'desc' : 'asc';
+
+    this.actualizarEmpleadosFiltrados();
+  }
+
+  // Actualiza la lista aplicando búsqueda y ordenamiento.
+  private actualizarEmpleadosFiltrados(): void {
+    this.empleadosFiltrados = this.empleados
+      .filter((empleado) => {
+        const nombre =
+          `${empleado.firstName} ${empleado.lastName}`.toLowerCase();
+
+        const correo = empleado.email.toLowerCase();
+        const departamento =
+          empleado.company.department.toLowerCase();
+
+        return (
+          nombre.includes(this.textoBusqueda) ||
+          correo.includes(this.textoBusqueda) ||
+          departamento.includes(this.textoBusqueda)
+        );
+      })
+      .sort((a, b) => {
+        const nombreA = `${a.firstName} ${a.lastName}`;
+        const nombreB = `${b.firstName} ${b.lastName}`;
+
+        const resultado = nombreA.localeCompare(
+          nombreB,
+          'es',
+          { sensitivity: 'base' },
+        );
+
+        return this.orden === 'asc' ? resultado : -resultado;
+      });
+
+    this.cdr.markForCheck();
   }
 
   // Agrega o quita un empleado de favoritos.
   async alternarFavorito(id: number): Promise<void> {
     await this.favoritosService.alternarFavorito(id);
+
     this.cdr.markForCheck();
   }
 }
