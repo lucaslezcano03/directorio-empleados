@@ -1,43 +1,86 @@
 ion-content {
-  --background: #f5f6fa;
+  --background: #f4f6fa;
 }
 
 .encabezado {
-  margin: 12px 4px 18px;
+  margin: 12px 4px 20px;
+
+  .etiqueta {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    color: var(--ion-color-primary);
+    margin-bottom: 8px;
+  }
 
   h1 {
-    font-size: 26px;
+    font-size: 27px;
     font-weight: 700;
-    margin-bottom: 5px;
-    color: var(--ion-color-dark);
+    margin: 0 0 7px;
+    color: #202b3c;
   }
 
   p {
-    color: var(--ion-color-medium);
-    margin-top: 0;
+    color: #7b8494;
+    margin: 0;
     font-size: 14px;
+  }
+}
+
+.resumen {
+  display: flex;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 17px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #e9edf3;
+  box-shadow: 0 3px 12px rgba(30, 50, 80, 0.04);
+}
+
+.resumen-dato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  strong {
+    font-size: 23px;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+
+  span {
+    font-size: 12px;
+    color: #7b8494;
   }
 }
 
 .lista-empleados {
   background: transparent;
   margin: 0;
+  padding: 0;
 }
 
 .empleado-item {
   --background: #ffffff;
-  --border-radius: 12px;
-  --padding-start: 12px;
-  --inner-padding-end: 12px;
-  --min-height: 88px;
+  --border-radius: 15px;
+  --padding-start: 14px;
+  --inner-padding-end: 10px;
+  --min-height: 100px;
+  --border-width: 0;
 
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #e8edf4;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px rgba(30, 50, 80, 0.045);
 }
 
 ion-avatar {
   width: 54px;
   height: 54px;
-  margin-right: 5px;
+  margin-inline-end: 12px;
 
   img {
     width: 100%;
@@ -49,20 +92,30 @@ ion-avatar {
 ion-label {
   h2 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
+    color: #263448;
     margin-bottom: 5px;
   }
 
   p {
     font-size: 12px;
-    color: var(--ion-color-medium);
-    margin-top: 4px;
+    color: #7b8494;
+    margin: 4px 0;
   }
 
   ion-badge {
-    margin-top: 5px;
-    font-weight: 500;
+    margin-top: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 8px;
+    border-radius: 7px;
   }
+}
+
+.boton-favorito {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  font-size: 19px;
 }
 
 .estado {
@@ -75,9 +128,25 @@ ion-label {
   text-align: center;
 }
 
+.estado-vacio {
+  background: #ffffff;
+  border: 1px solid #e9edf3;
+  border-radius: 16px;
+  padding: 25px 15px;
+
+  ion-icon {
+    font-size: 42px;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+}
+
 .contador {
   text-align: center;
-  color: var(--ion-color-medium);
+  color: #8993a3;
   font-size: 12px;
-  margin: 18px 0;
+  margin: 20px 0;
 }
