@@ -1,10 +1,4 @@
-
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  type OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, type OnInit } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -65,11 +59,7 @@ export class Tab1Page implements OnInit {
   orden: 'asc' | 'desc' = 'asc';
 
   get cantidadDepartamentos(): number {
-    return new Set(
-      this.empleados.map(
-        (empleado) => empleado.company.department,
-      ),
-    ).size;
+    return new Set(this.empleados.map((empleado) => empleado.company.department)).size;
   }
 
   get cantidadFavoritos(): number {
@@ -114,8 +104,7 @@ export class Tab1Page implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.mensajeError =
-          'No se pudieron cargar los empleados. Verificá tu conexión.';
+        this.mensajeError = 'No se pudieron cargar los empleados. Verificá tu conexión.';
 
         this.cargando = false;
         this.cdr.markForCheck();
@@ -124,11 +113,8 @@ export class Tab1Page implements OnInit {
   }
 
   // Filtra por nombre, apellido, correo o departamento.
-  filtrarEmpleados(
-    event: CustomEvent<{ value?: string | null }>,
-  ): void {
-    this.textoBusqueda =
-      event.detail.value?.trim().toLowerCase() ?? '';
+  filtrarEmpleados(event: CustomEvent<{ value?: string | null }>): void {
+    this.textoBusqueda = event.detail.value?.trim().toLowerCase() ?? '';
 
     this.actualizarEmpleadosFiltrados();
   }
@@ -144,12 +130,10 @@ export class Tab1Page implements OnInit {
   private actualizarEmpleadosFiltrados(): void {
     this.empleadosFiltrados = this.empleados
       .filter((empleado) => {
-        const nombre =
-          `${empleado.firstName} ${empleado.lastName}`.toLowerCase();
+        const nombre = `${empleado.firstName} ${empleado.lastName}`.toLowerCase();
 
         const correo = empleado.email.toLowerCase();
-        const departamento =
-          empleado.company.department.toLowerCase();
+        const departamento = empleado.company.department.toLowerCase();
 
         return (
           nombre.includes(this.textoBusqueda) ||
@@ -161,11 +145,7 @@ export class Tab1Page implements OnInit {
         const nombreA = `${a.firstName} ${a.lastName}`;
         const nombreB = `${b.firstName} ${b.lastName}`;
 
-        const resultado = nombreA.localeCompare(
-          nombreB,
-          'es',
-          { sensitivity: 'base' },
-        );
+        const resultado = nombreA.localeCompare(nombreB, 'es', { sensitivity: 'base' });
 
         return this.orden === 'asc' ? resultado : -resultado;
       });

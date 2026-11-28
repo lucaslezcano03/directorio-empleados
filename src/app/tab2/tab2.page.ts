@@ -1,10 +1,4 @@
-
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  type OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, type OnInit } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -81,8 +75,7 @@ export class Tab2Page implements OnInit {
         const grupos = new Map<string, Empleado[]>();
 
         respuesta.users.forEach((empleado) => {
-          const nombre =
-            empleado.company.department || 'Sin departamento';
+          const nombre = empleado.company.department || 'Sin departamento';
 
           const empleados = grupos.get(nombre) ?? [];
 
@@ -90,22 +83,18 @@ export class Tab2Page implements OnInit {
           grupos.set(nombre, empleados);
         });
 
-        this.departamentos = Array.from(
-          grupos,
-          ([nombre, empleados]) => ({
-            nombre,
-            empleados,
-            expandido: false,
-          }),
-        ).sort((a, b) => a.nombre.localeCompare(b.nombre));
+        this.departamentos = Array.from(grupos, ([nombre, empleados]) => ({
+          nombre,
+          empleados,
+          expandido: false,
+        })).sort((a, b) => a.nombre.localeCompare(b.nombre));
 
         this.cargando = false;
 
         this.cdr.markForCheck();
       },
       error: () => {
-        this.mensajeError =
-          'No se pudieron cargar los departamentos. Verificá tu conexión.';
+        this.mensajeError = 'No se pudieron cargar los departamentos. Verificá tu conexión.';
         this.cargando = false;
 
         this.cdr.markForCheck();
@@ -121,15 +110,11 @@ export class Tab2Page implements OnInit {
       return this.departamentos;
     }
 
-    return this.departamentos.filter((departamento) =>
-      departamento.nombre.toLowerCase().includes(termino),
-    );
+    return this.departamentos.filter((departamento) => departamento.nombre.toLowerCase().includes(termino));
   }
 
   // Actualiza el texto ingresado en el buscador.
-  filtrarDepartamentos(
-    event: CustomEvent<{ value?: string | null }>,
-  ): void {
+  filtrarDepartamentos(event: CustomEvent<{ value?: string | null }>): void {
     this.textoBusqueda = event.detail.value ?? '';
   }
 

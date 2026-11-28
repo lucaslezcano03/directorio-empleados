@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Departamentos</ion-title>
@@ -13,106 +12,97 @@
   </div>
 
   @if (cargando) {
-    <div class="estado">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Cargando departamentos...</p>
-    </div>
+  <div class="estado">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando departamentos...</p>
+  </div>
   } @else if (mensajeError) {
-    <div class="estado">
-      <ion-text color="danger">
-        <p>{{ mensajeError }}</p>
-      </ion-text>
-      <ion-button (click)="cargarDepartamentos()">Reintentar</ion-button>
-    </div>
+  <div class="estado">
+    <ion-text color="danger">
+      <p>{{ mensajeError }}</p>
+    </ion-text>
+    <ion-button (click)="cargarDepartamentos()">Reintentar</ion-button>
+  </div>
   } @else if (departamentos.length === 0) {
-    <div class="estado">
-      <ion-text color="medium">
-        <p>No se encontraron departamentos.</p>
-      </ion-text>
-    </div>
+  <div class="estado">
+    <ion-text color="medium">
+      <p>No se encontraron departamentos.</p>
+    </ion-text>
+  </div>
   } @else {
-    <div class="resumen">
-      <div class="resumen-dato">
-        <strong>{{ departamentos.length }}</strong>
-        <span>Departamentos</span>
-      </div>
-      <div class="resumen-divisor"></div>
-      <div class="resumen-dato">
-        <strong>{{ totalEmpleados }}</strong>
-        <span>Empleados</span>
-      </div>
+  <div class="resumen">
+    <div class="resumen-dato">
+      <strong>{{ departamentos.length }}</strong>
+      <span>Departamentos</span>
     </div>
+    <div class="resumen-divisor"></div>
+    <div class="resumen-dato">
+      <strong>{{ totalEmpleados }}</strong>
+      <span>Empleados</span>
+    </div>
+  </div>
 
-    <ion-searchbar
-      class="buscador"
-      placeholder="Buscar departamento..."
-      [debounce]="200"
-      [animated]="true"
-      [value]="textoBusqueda"
-      (ionInput)="filtrarDepartamentos($event)"
-      aria-label="Buscar departamento"
-    ></ion-searchbar>
+  <ion-searchbar
+    class="buscador"
+    placeholder="Buscar departamento..."
+    [debounce]="200"
+    [animated]="true"
+    [value]="textoBusqueda"
+    (ionInput)="filtrarDepartamentos($event)"
+    aria-label="Buscar departamento"
+  ></ion-searchbar>
 
-    @if (departamentosFiltrados.length === 0) {
-      <div class="estado">
-        <ion-text color="medium">
-          <p>No se encontraron departamentos con ese nombre.</p>
-        </ion-text>
-      </div>
-    } @else {
-      <div class="lista-departamentos">
-        @for (departamento of departamentosFiltrados; track departamento.nombre) {
-          <div class="departamento-card" [class.expandido]="departamento.expandido">
-            <ion-item lines="none" class="departamento-item">
-              <ion-label>
-                <h2>{{ departamento.nombre }}</h2>
-                <p>Área de trabajo</p>
-              </ion-label>
+  @if (departamentosFiltrados.length === 0) {
+  <div class="estado">
+    <ion-text color="medium">
+      <p>No se encontraron departamentos con ese nombre.</p>
+    </ion-text>
+  </div>
+  } @else {
+  <div class="lista-departamentos">
+    @for (departamento of departamentosFiltrados; track departamento.nombre) {
+    <div class="departamento-card" [class.expandido]="departamento.expandido">
+      <ion-item lines="none" class="departamento-item">
+        <ion-label>
+          <h2>{{ departamento.nombre }}</h2>
+          <p>Área de trabajo</p>
+        </ion-label>
 
-              <ion-badge color="primary" slot="end">
-                {{ departamento.empleados.length }}
-              </ion-badge>
+        <ion-badge color="primary" slot="end"> {{ departamento.empleados.length }} </ion-badge>
 
-              <ion-button
-                slot="end"
-                fill="clear"
-                size="small"
-                class="boton-expandir"
-                [attr.aria-expanded]="departamento.expandido"
-                (click)="alternarDepartamento(departamento)"
-              >
-                {{ departamento.expandido ? 'Ocultar' : 'Ver integrantes' }}
-              </ion-button>
-            </ion-item>
+        <ion-button
+          slot="end"
+          fill="clear"
+          size="small"
+          class="boton-expandir"
+          [attr.aria-expanded]="departamento.expandido"
+          (click)="alternarDepartamento(departamento)"
+        >
+          {{ departamento.expandido ? 'Ocultar' : 'Ver integrantes' }}
+        </ion-button>
+      </ion-item>
 
-            @if (departamento.expandido) {
-              <ion-list class="lista-integrantes">
-                @for (empleado of departamento.empleados; track empleado.id) {
-                  <ion-item lines="none" class="integrante-item">
-                    <ion-avatar slot="start">
-                      <img
-                        [src]="empleado.image"
-                        [alt]="empleado.firstName + ' ' + empleado.lastName"
-                      />
-                    </ion-avatar>
+      @if (departamento.expandido) {
+      <ion-list class="lista-integrantes">
+        @for (empleado of departamento.empleados; track empleado.id) {
+        <ion-item lines="none" class="integrante-item">
+          <ion-avatar slot="start">
+            <img [src]="empleado.image" [alt]="empleado.firstName + ' ' + empleado.lastName" />
+          </ion-avatar>
 
-                    <ion-label>
-                      <h3>{{ empleado.firstName }} {{ empleado.lastName }}</h3>
-                      <p>{{ empleado.company.title }}</p>
-                      <p class="correo">{{ empleado.email }}</p>
-                    </ion-label>
-                  </ion-item>
-                }
-              </ion-list>
-            }
-          </div>
+          <ion-label>
+            <h3>{{ empleado.firstName }} {{ empleado.lastName }}</h3>
+            <p>{{ empleado.company.title }}</p>
+            <p class="correo">{{ empleado.email }}</p>
+          </ion-label>
+        </ion-item>
         }
-      </div>
-
-      <p class="contador">
-        Mostrando {{ departamentosFiltrados.length }} de
-        {{ departamentos.length }} departamentos
-      </p>
+      </ion-list>
+      }
+    </div>
     }
-  }
+  </div>
+
+  <p class="contador">Mostrando {{ departamentosFiltrados.length }} de {{ departamentos.length }} departamentos</p>
+  } }
 </ion-content>

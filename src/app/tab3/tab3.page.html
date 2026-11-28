@@ -5,7 +5,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div class="encabezado">
     <span class="etiqueta">DIRECTORIO DE EMPLEADOS</span>
     <h1>Mis favoritos</h1>
@@ -13,75 +12,64 @@
   </div>
 
   @if (cargando) {
-    <div class="estado">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Cargando favoritos...</p>
-    </div>
+  <div class="estado">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando favoritos...</p>
+  </div>
   } @else if (mensajeError) {
-    <div class="estado">
-      <ion-text color="danger">
-        <p>{{ mensajeError }}</p>
-      </ion-text>
-    </div>
+  <div class="estado">
+    <ion-text color="danger">
+      <p>{{ mensajeError }}</p>
+    </ion-text>
+  </div>
   } @else {
 
-    <div class="resumen">
-      <div class="resumen-dato">
-        <strong>{{ empleadosFavoritos.length }}</strong>
-        <span>Empleados guardados</span>
-      </div>
+  <div class="resumen">
+    <div class="resumen-dato">
+      <strong>{{ empleadosFavoritos.length }}</strong>
+      <span>Empleados guardados</span>
     </div>
+  </div>
 
-    @if (empleadosFavoritos.length === 0) {
-      <div class="estado estado-vacio">
-        <ion-icon name="heart-outline" color="medium"></ion-icon>
-        <ion-text color="medium">
-          <p>Todavía no tenés empleados favoritos.</p>
-          <p>Agregá empleados desde la pestaña Empleados.</p>
-        </ion-text>
-      </div>
-    } @else {
+  @if (empleadosFavoritos.length === 0) {
+  <div class="estado estado-vacio">
+    <ion-icon name="heart-outline" color="medium"></ion-icon>
+    <ion-text color="medium">
+      <p>Todavía no tenés empleados favoritos.</p>
+      <p>Agregá empleados desde la pestaña Empleados.</p>
+    </ion-text>
+  </div>
+  } @else {
 
-      <ion-list class="lista-empleados">
-        @for (empleado of empleadosFavoritos; track empleado.id) {
-          <ion-item class="empleado-item" lines="none">
+  <ion-list class="lista-empleados">
+    @for (empleado of empleadosFavoritos; track empleado.id) {
+    <ion-item class="empleado-item" lines="none">
+      <ion-avatar slot="start">
+        <img [src]="empleado.image" [alt]="empleado.firstName + ' ' + empleado.lastName" />
+      </ion-avatar>
 
-            <ion-avatar slot="start">
-              <img
-                [src]="empleado.image"
-                [alt]="empleado.firstName + ' ' + empleado.lastName"
-              />
-            </ion-avatar>
+      <ion-label>
+        <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
+        <p>{{ empleado.company.title }}</p>
+        <p>{{ empleado.email }}</p>
 
-            <ion-label>
-              <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
-              <p>{{ empleado.company.title }}</p>
-              <p>{{ empleado.email }}</p>
+        <ion-badge color="primary"> {{ empleado.company.department }} </ion-badge>
+      </ion-label>
 
-              <ion-badge color="primary">
-                {{ empleado.company.department }}
-              </ion-badge>
-            </ion-label>
-
-            <ion-button
-              slot="end"
-              fill="clear"
-              color="danger"
-              class="boton-favorito"
-              aria-label="Quitar de favoritos"
-              (click)="quitarFavorito(empleado.id)"
-            >
-              <ion-icon name="heart"></ion-icon>
-            </ion-button>
-
-          </ion-item>
-        }
-      </ion-list>
-
-      <p class="contador">
-        Mostrando {{ empleadosFavoritos.length }} empleados favoritos
-      </p>
+      <ion-button
+        slot="end"
+        fill="clear"
+        color="danger"
+        class="boton-favorito"
+        aria-label="Quitar de favoritos"
+        (click)="quitarFavorito(empleado.id)"
+      >
+        <ion-icon name="heart"></ion-icon>
+      </ion-button>
+    </ion-item>
     }
-  }
+  </ion-list>
 
+  <p class="contador">Mostrando {{ empleadosFavoritos.length }} empleados favoritos</p>
+  } }
 </ion-content>

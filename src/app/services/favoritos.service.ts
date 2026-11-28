@@ -5,7 +5,6 @@ import { Preferences } from '@capacitor/preferences';
   providedIn: 'root',
 })
 export class FavoritosService {
-
   private clave = 'empleados-favoritos';
 
   idsFavoritos: number[] = [];
@@ -21,9 +20,7 @@ export class FavoritosService {
         const ids: unknown = JSON.parse(resultado.value);
 
         if (Array.isArray(ids)) {
-          this.idsFavoritos = ids.filter(
-            (id): id is number => typeof id === 'number',
-          );
+          this.idsFavoritos = ids.filter((id): id is number => typeof id === 'number');
           return;
         }
       } catch {
@@ -42,9 +39,7 @@ export class FavoritosService {
   // Agrega o quita un empleado de favoritos.
   async alternarFavorito(id: number): Promise<void> {
     if (this.esFavorito(id)) {
-      this.idsFavoritos = this.idsFavoritos.filter(
-        (favoritoId) => favoritoId !== id,
-      );
+      this.idsFavoritos = this.idsFavoritos.filter((favoritoId) => favoritoId !== id);
     } else {
       this.idsFavoritos = [...this.idsFavoritos, id];
     }

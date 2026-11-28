@@ -1,8 +1,8 @@
 {
   "name": "directorio-empleados",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "author": "Lucas Lezcano",
+  "homepage": "https://github.com/lucaslezcano03/directorio-empleados",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -57,5 +57,5 @@
     "vitest": "^5.1.0"
   },
   "prettier": "@ionic/prettier-config",
-  "description": "An Ionic project"
+  "description": "Directorio de Empleados desarrollado con Ionic y Angular"
 }

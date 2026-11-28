@@ -1,4 +1,3 @@
-
 // Datos que va a utilizar de cada empleado
 export interface Empleado {
   id: number;

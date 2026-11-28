@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title>Directorio de Empleados</ion-title>
@@ -6,43 +5,28 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <div class="encabezado">
     <h1>Empleados</h1>
     <p>Listado general del personal</p>
   </div>
 
   @if (!cargando && !mensajeError) {
-    <div class="resumen-estadisticas">
-
-      <div class="tarjeta-estadistica">
-        <span class="valor-estadistica">
-          {{ empleados.length }}
-        </span>
-        <span class="etiqueta-estadistica">
-          Empleados
-        </span>
-      </div>
-
-      <div class="tarjeta-estadistica">
-        <span class="valor-estadistica">
-          {{ cantidadDepartamentos }}
-        </span>
-        <span class="etiqueta-estadistica">
-          Departamentos
-        </span>
-      </div>
-
-      <div class="tarjeta-estadistica">
-        <span class="valor-estadistica">
-          {{ cantidadFavoritos }}
-        </span>
-        <span class="etiqueta-estadistica">
-          Favoritos
-        </span>
-      </div>
-
+  <div class="resumen-estadisticas">
+    <div class="tarjeta-estadistica">
+      <span class="valor-estadistica"> {{ empleados.length }} </span>
+      <span class="etiqueta-estadistica"> Empleados </span>
     </div>
+
+    <div class="tarjeta-estadistica">
+      <span class="valor-estadistica"> {{ cantidadDepartamentos }} </span>
+      <span class="etiqueta-estadistica"> Departamentos </span>
+    </div>
+
+    <div class="tarjeta-estadistica">
+      <span class="valor-estadistica"> {{ cantidadFavoritos }} </span>
+      <span class="etiqueta-estadistica"> Favoritos </span>
+    </div>
+  </div>
   }
 
   <ion-searchbar
@@ -52,96 +36,72 @@
   ></ion-searchbar>
 
   @if (!cargando && !mensajeError) {
-    <div class="barra-ordenamiento">
+  <div class="barra-ordenamiento">
+    <span>Ordenar por nombre</span>
 
-      <span>Ordenar por nombre</span>
+    <ion-segment
+      [value]="orden"
+      (ionChange)="cambiarOrden($event.detail.value)"
+      aria-label="Ordenar empleados por nombre"
+    >
+      <ion-segment-button value="asc">
+        <ion-label>A - Z</ion-label>
+      </ion-segment-button>
 
-      <ion-segment
-        [value]="orden"
-        (ionChange)="cambiarOrden($event.detail.value)"
-        aria-label="Ordenar empleados por nombre"
-      >
-        <ion-segment-button value="asc">
-          <ion-label>A - Z</ion-label>
-        </ion-segment-button>
-
-        <ion-segment-button value="desc">
-          <ion-label>Z - A</ion-label>
-        </ion-segment-button>
-
-      </ion-segment>
-
-    </div>
-  }
-
-  @if (cargando) {
-    <div class="estado">
-      <ion-spinner name="crescent"></ion-spinner>
-      <p>Cargando empleados...</p>
-    </div>
+      <ion-segment-button value="desc">
+        <ion-label>Z - A</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  } @if (cargando) {
+  <div class="estado">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando empleados...</p>
+  </div>
   } @else if (mensajeError) {
-    <div class="estado">
-      <ion-text color="danger">
-        <p>{{ mensajeError }}</p>
-      </ion-text>
+  <div class="estado">
+    <ion-text color="danger">
+      <p>{{ mensajeError }}</p>
+    </ion-text>
 
-      <ion-button (click)="cargarEmpleados()">
-        Reintentar
-      </ion-button>
-    </div>
+    <ion-button (click)="cargarEmpleados()"> Reintentar </ion-button>
+  </div>
   } @else if (empleadosFiltrados.length === 0) {
-    <div class="estado">
-      <ion-text color="medium">
-        <p>No se encontraron empleados.</p>
-      </ion-text>
-    </div>
+  <div class="estado">
+    <ion-text color="medium">
+      <p>No se encontraron empleados.</p>
+    </ion-text>
+  </div>
   } @else {
-    <ion-list class="lista-empleados">
+  <ion-list class="lista-empleados">
+    @for (empleado of empleadosFiltrados; track empleado.id) {
+    <ion-item class="empleado-item" lines="none">
+      <ion-avatar slot="start">
+        <img [src]="empleado.image" [alt]="empleado.firstName + ' ' + empleado.lastName" />
+      </ion-avatar>
 
-      @for (empleado of empleadosFiltrados; track empleado.id) {
-        <ion-item class="empleado-item" lines="none">
+      <ion-label>
+        <h2>{{ empleado.firstName }} {{ empleado.lastName }}</h2>
 
-          <ion-avatar slot="start">
-            <img
-              [src]="empleado.image"
-              [alt]="empleado.firstName + ' ' + empleado.lastName"
-            />
-          </ion-avatar>
+        <p>{{ empleado.company.title }}</p>
+        <p>{{ empleado.email }}</p>
 
-          <ion-label>
-            <h2>
-              {{ empleado.firstName }} {{ empleado.lastName }}
-            </h2>
+        <ion-badge color="primary"> {{ empleado.company.department }} </ion-badge>
+      </ion-label>
 
-            <p>{{ empleado.company.title }}</p>
-            <p>{{ empleado.email }}</p>
+      <ion-button
+        slot="end"
+        fill="clear"
+        [color]="favoritosService.esFavorito(empleado.id) ? 'danger' : 'medium'"
+        [attr.aria-label]="favoritosService.esFavorito(empleado.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+        (click)="alternarFavorito(empleado.id)"
+      >
+        <ion-icon [name]="favoritosService.esFavorito(empleado.id) ? 'heart' : 'heart-outline'"></ion-icon>
+      </ion-button>
+    </ion-item>
+    }
+  </ion-list>
 
-            <ion-badge color="primary">
-              {{ empleado.company.department }}
-            </ion-badge>
-          </ion-label>
-
-          <ion-button
-            slot="end"
-            fill="clear"
-            [color]="favoritosService.esFavorito(empleado.id) ? 'danger' : 'medium'"
-            [attr.aria-label]="favoritosService.esFavorito(empleado.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'"
-            (click)="alternarFavorito(empleado.id)"
-          >
-            <ion-icon
-              [name]="favoritosService.esFavorito(empleado.id) ? 'heart' : 'heart-outline'"
-            ></ion-icon>
-          </ion-button>
-
-        </ion-item>
-      }
-
-    </ion-list>
-
-    <p class="contador">
-      Mostrando {{ empleadosFiltrados.length }}
-      de {{ empleados.length }} empleados
-    </p>
+  <p class="contador">Mostrando {{ empleadosFiltrados.length }} de {{ empleados.length }} empleados</p>
   }
-
 </ion-content>

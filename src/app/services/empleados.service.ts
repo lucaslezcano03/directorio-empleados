@@ -1,4 +1,3 @@
-
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
@@ -16,8 +15,6 @@ export class EmpleadosService {
 
   // Obtiene la lista completa de empleados.
   obtenerEmpleados(): Observable<RespuestaEmpleados> {
-    return this.http.get<RespuestaEmpleados>(
-      `${environment.apiUrl}?limit=0`,
-    );
+    return this.http.get<RespuestaEmpleados>(`${environment.apiUrl}?limit=0`);
   }
 }

@@ -1,9 +1,4 @@
-
-import {
-  ChangeDetectorRef,
-  Component,
-  inject,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -91,17 +86,14 @@ export class Tab3Page {
 
     this.empleadosService.obtenerEmpleados().subscribe({
       next: (respuesta) => {
-        this.empleadosFavoritos = respuesta.users.filter(
-          (empleado) => this.favoritosService.esFavorito(empleado.id),
-        );
+        this.empleadosFavoritos = respuesta.users.filter((empleado) => this.favoritosService.esFavorito(empleado.id));
 
         this.cargando = false;
 
         this.cdr.markForCheck();
       },
       error: () => {
-        this.mensajeError =
-          'No se pudieron cargar los empleados favoritos.';
+        this.mensajeError = 'No se pudieron cargar los empleados favoritos.';
         this.cargando = false;
 
         this.cdr.markForCheck();
@@ -113,9 +105,7 @@ export class Tab3Page {
   async quitarFavorito(id: number): Promise<void> {
     await this.favoritosService.alternarFavorito(id);
 
-    this.empleadosFavoritos = this.empleadosFavoritos.filter(
-      (empleado) => empleado.id !== id,
-    );
+    this.empleadosFavoritos = this.empleadosFavoritos.filter((empleado) => empleado.id !== id);
 
     this.cdr.markForCheck();
   }
