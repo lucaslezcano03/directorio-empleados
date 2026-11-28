@@ -66,6 +66,7 @@ empleados favoritos.
 | Capacitor Preferences | ^8.0.1 | Persistencia local |
 | RxJS | ~7.8.0 | Operaciones asíncronas |
 | Ionicons | ^8.1.0 | Iconografía |
+| Capacitor Android | ^8.6.2 | Plataforma nativa para generar la aplicación Android |
 
 > Las versiones indicadas corresponden a las dependencias declaradas en
 > el `package.json` compartido para la documentación.
@@ -100,6 +101,17 @@ manera:
 
 ``` text
 directorio-empleados/
+├── android/
+│   ├── app/
+│   │   ├── src/
+│   │   └── build.gradle
+│   ├── gradle/
+│   │   └── wrapper/
+│   ├── build.gradle
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   └── settings.gradle
 ├── docs/
 │   └── capturas/
 │       ├── empleados.png
@@ -108,10 +120,7 @@ directorio-empleados/
 ├── src/
 │   ├── app/
 │   │   ├── models/
-│   │   │   └── empleado.model.ts
 │   │   ├── services/
-│   │   │   ├── empleados.service.ts
-│   │   │   └── favoritos.service.ts
 │   │   ├── tab1/
 │   │   ├── tab2/
 │   │   ├── tab3/
@@ -120,6 +129,7 @@ directorio-empleados/
 ├── angular.json
 ├── capacitor.config.ts
 ├── package.json
+├── package-lock.json
 ├── README.md
 └── IA.md
 ```
@@ -248,26 +258,73 @@ A continuación se muestran las principales pantallas de la aplicación:
 
 ## Aplicación para Android
 
-El proyecto utiliza Capacitor 8. Para generar una aplicación Android se
-debe contar con Android Studio y la plataforma Android de Capacitor.
+El proyecto cuenta con una plataforma Android configurada mediante **Capacitor 8**, utilizando el complemento `@capacitor/android`.
 
-En el `package.json` compartido para esta documentación no aparece
-declarada la dependencia `@capacitor/android`. Si todavía no se agregó
-la plataforma Android, primero se debe instalar una versión compatible
-con Capacitor 8 y luego ejecutar `npx cap add android`.
+La aplicación puede compilarse desde la línea de comandos de Windows mediante Gradle, sin necesidad de abrir Android Studio, siempre que estén instalados y configurados Java JDK y Android SDK.
 
-Una vez configurada la plataforma, el flujo habitual de actualización y
-apertura del proyecto nativo es:
+### Requisitos
 
-``` bash
+- Node.js y npm.
+- Java JDK 21.
+- Android SDK y herramientas de compilación.
+- Gradle Wrapper incluido en el proyecto.
+
+### Generación del APK
+
+Desde la carpeta raíz del proyecto, ejecutar:
+
+```bash
+npm install
 npm run build
 npx cap sync android
-npx cap open android
 ```
 
-La generación del APK debe verificarse desde Android Studio. No se
-incluye un APK en este repositorio hasta que se haya compilado y
-probado.
+Luego ingresar a la carpeta Android:
+
+```bash
+cd android
+```
+
+Ejecutar la compilación:
+
+```bash
+gradlew.bat assembleDebug
+```
+
+El archivo APK generado se encuentra en:
+
+```text
+android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Instalación en un dispositivo Android
+
+Conectar un dispositivo mediante USB y habilitar la depuración USB.
+
+Desde la carpeta `android`, ejecutar:
+
+```bash
+adb devices
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Prueba realizada
+
+Se generó correctamente una versión de depuración (`debug`) de la aplicación, que posteriormente fue instalada y probada en un dispositivo físico Xiaomi/Redmi.
+
+Se verificó el funcionamiento de las tres secciones principales: empleados, departamentos y favoritos.
+
+El APK y los archivos temporales de compilación se excluyen del control de versiones mediante `.gitignore`. El proyecto nativo Android sí forma parte del repositorio.
+
+### APK de entrega
+
+Se incluye una versión instalable de la aplicación en la carpeta
+`entregables/`.
+
+Archivo: `Directorio-de-Empleados-debug.apk`.
+
+Esta versión corresponde a una compilación de depuración
+que fue instalada y probada en un dispositivo Android físico.
 
 ## Autor
 

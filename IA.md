@@ -48,23 +48,17 @@ transcripciones literales de cada conversación:
 
 ## Partes del proyecto que recibieron asistencia
 
-La asistencia se concentró en la comprensión, revisión y mejora de
-fragmentos relacionados con:
+La asistencia se concentró en la comprensión, revisión y mejora de fragmentos relacionados con:
 
--   `tab1/`: listado de empleados, búsqueda, ordenamiento y selección de
-    favoritos.
--   `tab2/`: agrupación y visualización de empleados por departamento.
--   `tab3/`: recuperación y administración de empleados favoritos.
--   `services/empleados.service.ts`: consulta de empleados mediante
-    `HttpClient`.
--   `services/favoritos.service.ts`: persistencia local de
-    identificadores de favoritos con Capacitor Preferences.
--   `README.md` e `IA.md`: organización y redacción de la documentación
-    del proyecto.
+- `tab1/`: listado de empleados, búsqueda, ordenamiento y selección de favoritos.
+- `tab2/`: agrupación y visualización de empleados por departamento.
+- `tab3/`: recuperación y administración de empleados favoritos.
+- `services/empleados.service.ts`: consulta de empleados mediante `HttpClient`.
+- `services/favoritos.service.ts`: persistencia local de identificadores de favoritos con Capacitor Preferences.
+- `README.md` e `IA.md`: organización y redacción de la documentación del proyecto.
+- Configuración de la plataforma Android mediante Capacitor, sincronización del proyecto y generación del APK.
 
-La IA no se utilizó para generar automáticamente la totalidad de la
-aplicación. Las sugerencias y fragmentos recibidos fueron revisados y
-adaptados al código del proyecto.
+La IA no se utilizó para generar automáticamente la totalidad de la aplicación. Las sugerencias y fragmentos recibidos fueron revisados y adaptados al código del proyecto.
 
 
 ## Comprobaciones realizadas
